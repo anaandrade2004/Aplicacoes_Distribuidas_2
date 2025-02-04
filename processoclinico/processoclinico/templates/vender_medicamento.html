@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vender Medicamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 16px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        header h1 {
+            margin-top: 20px;
+            font-size: 2.5rem;
+            color: #8bb3e6;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #a1c4fd;
+        }
+
+        .form-container select,
+        .form-container input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #a1c4fd;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: left;
+            color: #d9534f;
+        }
+
+        ul li {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .button-container button {
+            width: 100%; 
+            padding: 15px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px; 
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bb3e6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vender Stock</h1>
+    </header>
+    <div class="form-container">
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <label for="medicamento">Medicamento:</label>
+            <select name="medicamento" id="medicamento" required>
+                <option value="" disabled selected>Selecione um medicamento</option>
+                {% for item in medicamentos_com_stock %}
+                    <option value="{{ item.medicamento.id }}">{{ item.medicamento.nome }} - {{ item.stock.s_total }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="quantidade">Quantidade a vender:</label>
+            <input type="number" id="quantidade" name="quantidade" min="1" required>
+            
+            <button type="submit">Vender</button>
+        </form>
+
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='{% if user_type == 'boss' %}{% url 'home_page_boss' %}{% elif user_type == 'médico' %}{% url 'home_page_medico' %}{% elif user_type == 'farmacêutico' %}{% url 'home_page_farma' %}{% elif user_type == 'utente' %}{% url 'home_page_utente' %}{% else %}{% url 'login' %}{% endif %}'">
+                Sair
+            </button>
+        </div>
+        
+    </div>
+    
+</body>
+</html>

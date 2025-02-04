@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Consulta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        header h1 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #8bb3e6;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+        }
+
+        .form-container, .medicamentos-container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-container label, .medicamentos-container label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #8bb3e6;
+        }
+
+        .form-container textarea, .form-container select,
+        .medicamentos-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-container textarea {
+            height: 120px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .form-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #8bb3e6;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-buttons button:hover {
+            background: #7aaad6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Criar Consulta</h1>
+    </header>
+
+    <div class="container">
+        <form method="POST" style="display: flex; flex-direction: column; width: 100%; gap: 20px;">
+            {% csrf_token %}
+            <div style="display: flex; gap: 20px;">
+                <div class="form-container">
+                    <!-- Seleção do utente -->
+                    <label for="utente">Utente:</label>
+                    <select name="utente" id="utente" required>
+                        <option value="">-- Selecione o Utente --</option>
+                        {% for utente in utentes %}
+                            <option value="{{ utente.id }}">{{ utente.id }} - {{ utente.nome }} {{ utente.apelido }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Descrição da consulta -->
+                    <label for="descricao">Descrição da Consulta:</label>
+                    <textarea name="descricao" id="descricao" required></textarea>
+                    {% if message %}
+                        <p>{{ message }}</p>
+                    {% endif %}
+                </div>
+
+                {% if user_type != 'enfermeiro' %}
+                <div class="medicamentos-container">
+                    <!-- Descrição da receita -->
+                    <label for="descricao_receita">Descrição da Receita:</label>
+                    <textarea name="descricao_receita" id="descricao_receita"></textarea>
+
+                    <!-- Medicamentos para receita -->
+                    <label for="medicamentos">Medicamentos:</label>
+                    <div id="medicamentos">
+                        {% for medicamento in medicamentos %}
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <input type="checkbox" name="medicamentos" value="{{ medicamento.id }}" id="med_{{ medicamento.id }}">
+                                <label for="med_{{ medicamento.id }}">{{ medicamento.nome }}</label>
+                                <input type="number" name="quantidade_{{ medicamento.id }}" placeholder="Quantidade" min="1" style="width: 60px;">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit">Criar Consulta</button>
+                <button type="button" onclick="window.location.href='/{% if user_type == 'boss' %}home/boss{% elif user_type == 'médico' %}home/medico{% elif user_type == 'enfermeiro' %}home/medico{% else %}login{% endif %}/'">
+                    Sair
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

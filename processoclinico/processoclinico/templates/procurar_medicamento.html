@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar Medicamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #a1c4fd;
+        }
+
+        .form-container input, .form-container button {
+            width: 100%;
+            height: 50px; 
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-container input {
+            background-color: #fff;
+        }
+
+        .form-container button {
+            background-color: #a1c4fd;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .button-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .button-container button {
+            width: auto; 
+            padding: 12px 20px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .exit-button {
+            width: 4%; 
+            height: 30px; 
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit-button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .message {
+            color: #ff4d4d;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Procurar Medicamento</h1>
+
+    <!-- Formulário para Procurar Medicamento -->
+    <div class="form-container">
+        <form method="GET" action="{% url 'procurar_medicamento' %}">
+            <label for="query">Procurar Medicamento:</label>
+            <input type="text" id="query" name="query" value="{{ query }}" placeholder="Digite o nome do medicamento" required>
+            <button type="submit">Procurar</button>
+        </form>
+    </div>
+
+    <!-- Botão Sair -->
+    <button class="exit-button" type="button" onclick="window.location.href='{% if user_type == 'boss' %}{% url 'home_page_boss' %}{% elif user_type == 'médico' %}{% url 'home_page_medico' %}{% elif user_type == 'farmacêutico' %}{% url 'home_page_farma' %}{% elif user_type == 'utente' %}{% url 'home_page_utente' %}{% else %}{% url 'login' %}{% endif %}'">
+        Sair
+    </button>
+
+    
+    {% if query %}
+        <!-- Se medicamento não encontrado e a pesquisa foi feita -->
+        <div class="button-container">
+            <button onclick="window.location.href='/create-medicamento/'">Adicionar Medicamento</button>
+        </div>
+    {% endif %}
+
+    {% if message %}
+        <p class="message">{{ message }}</p>
+    {% endif %}
+</body>
+</html>

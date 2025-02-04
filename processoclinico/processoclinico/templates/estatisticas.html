@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 16px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        .stat-container {
+            background: #fff;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #8bb3e6;
+            line-height: 1.2;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #a1c4fd;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+            margin-top: 20px; 
+        }
+
+        button:hover {
+            background-color: #8bb3e6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+            animation: fadeIn 0.5s ease-in-out;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stat-container">
+        <h1>Escolha uma estatística para visualizar:</h1>
+        <form method="post" action="{% url 'estatisticas' %}">
+            {% csrf_token %}
+            <label for="option">Escolha uma opção:</label>
+            <select id="option" name="option">
+                <option value="total_utentes" {% if selected_option == "total_utentes" %}selected{% endif %}>Total de Utentes</option>
+                <option value="total_agentes" {% if selected_option == "total_agentes" %}selected{% endif %}>Total de Agentes</option>
+                <option value="medicamento_mais_stock" {% if selected_option == "medicamento_mais_stock" %}selected{% endif %}>Medicamento com Mais Stock</option>
+                <option value="utentes_mais_consultas" {% if selected_option == "utentes_mais_consultas" %}selected{% endif %}>Utente(s) com Mais Consultas</option>
+                <option value="maior_fornecedor" {% if selected_option == "maior_fornecedor" %}selected{% endif %}>Maior(es) Fornecedor(es)</option>
+                <option value="medicamento_mais_usado" {% if selected_option == "medicamento_mais_usado" %}selected{% endif %}>Medicamento(s) mais usado(s)</option>
+            </select>
+            <button type="submit">Submeter</button>
+        </form>
+
+        {% if message %}
+        <div class="message">
+            <h2 style="color: #8bb3e6;">Resultado:</h2>
+            <p style="font-size: 1.5rem; font-weight: bold; line-height: 1.2;">{{ message }}</p>
+        </div>
+        {% endif %}
+
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='{% url 'home_page_boss' %}'">Sair</button>
+        </div>
+    </div>
+</body>
+</html>

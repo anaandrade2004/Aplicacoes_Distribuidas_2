@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Medicamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 30px 50px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #8bb3e6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-container button {
+            padding: 12px 20px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .button-container a {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 12px 20px;
+            background-color: #ccc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container a:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Medicamento</h1>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <!-- Medicamento -->
+            <label for="nome">Nome do Medicamento:</label>
+            <input type="text" id="nome" name="nome" value="{{ medicamento.nome }}" required>
+
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" required>{{ medicamento.descricao }}</textarea>
+
+            <!-- Stock -->
+            <label for="fornecedor">Fornecedor:</label>
+            <input type="text" id="fornecedor" name="fornecedor" value="{{ fornecedores|join:', ' }}" readonly>
+
+            <label for="s_min">Quantidade Mínima:</label>
+            <input type="number" id="s_min" name="s_min" value="{{ stock.s_min }}" min="0" required>
+
+            <label for="s_max">Quantidade Máxima:</label>
+            <input type="number" id="s_max" name="s_max" value="{{ stock.s_max }}" min="0" required>
+
+            <label for="s_total">Quantidade Total Disponível:</label>
+            <input type="number" id="s_total" name="s_total" value="{{ stock.s_total }}" min="0" required>
+
+            <!-- Botões -->
+            <div class="button-container">
+                <button type="submit">Guardar Alterações</button>
+                <a href="{% url 'medicamento_info' %}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

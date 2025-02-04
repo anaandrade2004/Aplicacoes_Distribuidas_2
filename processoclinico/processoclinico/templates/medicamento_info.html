@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Medicamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+            padding-left: 20px; 
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 30px 50px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; 
+            margin-left: 0; 
+            margin-right: 20px; 
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #8bb3e6;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #a1c4fd;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #8bb3e6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-container button {
+            padding: 12px 20px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .no-info {
+            text-align: center;
+            color: #d32f2f;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Informações do Medicamento</h1>
+
+        {% if medicamento %}
+        <!-- Informações do Medicamento -->
+        <div>
+            <p><strong>Nome:</strong> {{ medicamento.nome }}</p>
+            <p><strong>Descrição:</strong> {{ medicamento.descricao }}</p>
+        </div>
+        {% endif %}
+
+        {% if stock %}
+        <!-- Informações do Stock -->
+        <div>
+            {% if fornecedores %}
+            <div>
+                <p><strong>Fornecedores:</strong> 
+                    {% for fornecedor in fornecedores %}
+                        {{ fornecedor.nome }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            {% endif %}
+
+            <p><strong>Quantidade Mínima:</strong> {{ stock.s_min }}</p>
+            <p><strong>Quantidade Máxima:</strong> {{ stock.s_max }}</p>
+            <p><strong>Quantidade Total Disponível:</strong> {{ stock.s_total }}</p>
+        </div>
+        {% endif %}
+
+        {% if not medicamento and not stock %}
+        <!-- Caso não haja informações -->
+        <p class="no-info">Nenhuma informação encontrada para o medicamento pesquisado.</p>
+        {% endif %}
+
+        <!-- Botões -->
+        <div class="button-container">
+            <button onclick="window.location.href='/editar-medicamento/'">Editar</button>
+            <button onclick="window.location.href='/adicionar-stock/'">Adicionar Stock</button>
+            <button onclick="window.location.href='/procurar-medicamento/'">Nova Pesquisa</button>
+            <button onclick="window.location.href='{% if user_type == 'boss' %}{% url 'home_page_boss' %}{% elif user_type == 'médico' %}{% url 'home_page_medico' %}{% elif user_type == 'farmacêutico' %}{% url 'home_page_farma' %}{% elif user_type == 'utente' %}{% url 'home_page_utente' %}{% else %}{% url 'login' %}{% endif %}'">Voltar ao Início</button>
+        </div>
+    </div>
+</body>
+</html>

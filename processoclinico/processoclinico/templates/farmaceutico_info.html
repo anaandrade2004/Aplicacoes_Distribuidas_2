@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Farmacêutico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            padding: 40px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            max-width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #8bb3e6;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .button-container button {
+            padding: 15px 25px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+            width: 200px;
+        }
+
+        .button-container button:hover {
+            background-color: #8bb3e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Informações do Farmacêutico</h1>
+        <p><strong>ID:</strong> {{ agente.id }}</p>
+        <p><strong>Nome:</strong> {{ agente.nome }}</p>
+        <p><strong>Cargo:</strong> {{ agente.cargo }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ agente.data_nascimento }}</p>
+
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='{% if user_type == 'boss' %}{% url 'home_page_boss' %}{% elif user_type == 'médico' %}{% url 'home_page_medico' %}{% elif user_type == 'farmacêutico' %}{% url 'home_page_farma' %}{% elif user_type == 'utente' %}{% url 'home_page_utente' %}{% else %}{% url 'login' %}{% endif %}'">
+                Sair
+            </button>
+        </div>
+    </div>
+</body>
+</html>

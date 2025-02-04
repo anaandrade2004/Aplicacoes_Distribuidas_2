@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height : 16px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        .login-container {
+            background: #fff; 
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #8bb3e6;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+            box-sizing: border-box; 
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #a1c4fd;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box; 
+        }
+
+        button:hover {
+            background-color: #8bb3e6;
+        }
+
+        .admin-button {
+            background-color: #6c757d;
+            margin-top: 10px;
+        }
+
+        .admin-button:hover {
+            background-color: #5a6268;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="nif" placeholder="Digite seu ID" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <br>
+        <form action="{% url 'admin:index' %}">
+            <button type="submit" class="admin-button">Admin</button>
+        </form>
+    </div>
+</body>
+</html>

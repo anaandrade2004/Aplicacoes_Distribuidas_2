@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Utente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 16px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+
+        header h1 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #8bb3e6;
+        }
+
+        .form-container {
+            background: #fff; 
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #a1c4fd;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+            box-sizing: border-box; 
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #a1c4fd;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box; 
+        }
+
+        .form-container button:hover {
+            background-color: #8bb3e6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #a1c4fd;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .radio-group input {
+            margin-right: 10px;
+        }
+
+        .radio-group label {
+            color: #000;
+            font-size: 14px;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Editar Informações do Utente</h1>
+    </header>
+
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" value="{{ utente.nome }}" required>
+            
+            <label for="apelido">Apelido:</label>
+            <input type="text" id="apelido" name="apelido" value="{{ utente.apelido }}" required>
+
+            <label for="genero">Gênero:</label>
+            <div class="radio-group">
+                <input type="radio" id="masculino" name="genero" value="Masculino" {% if utente.genero == 'Masculino' %}checked{% endif %}>
+                <label for="masculino">Masculino</label>
+
+                <input type="radio" id="feminino" name="genero" value="Feminino" {% if utente.genero == 'Feminino' %}checked{% endif %}>
+                <label for="feminino">Feminino</label>
+
+                <input type="radio" id="outro" name="genero" value="Outro" {% if utente.genero == 'Outro' %}checked{% endif %}>
+                <label for="outro">Outro</label>
+            </div>
+
+            <label for="morada">Morada:</label>
+            <input type="text" id="morada" name="morada" value="{{ utente.morada }}" required>
+
+            <label for="telemovel">Telemóvel:</label>
+            <input type="text" id="telemovel" name="telemovel" value="{{ utente.telemovel }}" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ utente.email }}" required>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+        
+        <br>
+        <a href="{% url 'utente_info' %}" style="color: #8bb3e6;">Voltar</a>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

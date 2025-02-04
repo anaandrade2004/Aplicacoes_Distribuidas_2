@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar e Editar Agente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fff4bd, #dbe7f5);
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #a1c4fd;
+        }
+        .form-container input, .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .form-container button {
+            background-color: #a1c4fd;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .form-container button:hover {
+            background-color: #8bb3e6;
+        }
+        .no-result {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #d32f2f;
+        }
+        .create-button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #8bb3e6;
+            color: white;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .create-button:hover {
+            background-color: #6e94c4;
+        }
+        .exit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #a1c4fd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .exit-button:hover {
+            background-color: #8bb3e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Procurar Agente</h1>
+
+    <div class="form-container">
+        <form method="GET" action="{% url 'procurar_agente' %}">
+            <label for="query">Procurar Agente:</label>
+            <input type="text" id="query" name="query" placeholder="Digite o ID ou nome do agente" required>
+            <button type="submit">Procurar</button>
+        </form>
+    </div>
+
+    {% if agente %}
+    <div class="form-container">
+        <p>Agente encontrado: {{ agente.nome }}</p>
+        {% if agente.cargo == 'farmacêutico' %}
+            <a href="{% url 'farmaceutico_info' %}">Ver informações do Farmacêutico</a>
+        {% elif agente.cargo == 'médico' or agente.cargo == 'enfermeiro' %}
+            <a href="{% url 'agente_info' %}">Ver informações do Agente</a>
+        {% else %}
+            <p>Tipo de agente desconhecido.</p>
+        {% endif %}
+    </div>
+    {% else %}
+        {% if mensagem %}
+            <p class="no-result">{{ mensagem }}</p>
+        {% endif %}
+        {% if agente_nao_existe %}
+            <form method="GET" action="{% url 'create_agente' %}">
+                <button class="create-button" type="submit">Criar Novo Agente</button>
+            </form>
+        {% endif %}
+    {% endif %}
+            
+    <button class="exit-button" type="button" onclick="window.location.href='{% if user_type == 'boss' %}{% url 'home_page_boss' %}{% elif user_type == 'médico' %}{% url 'home_page_medico' %}{% elif user_type == 'farmacêutico' %}{% url 'home_page_farma' %}{% elif user_type == 'utente' %}{% url 'home_page_utente' %}{% else %}{% url 'login' %}{% endif %}'">
+        Sair
+    </button>
+</body>
+</html>
